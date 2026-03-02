@@ -6,16 +6,16 @@ COLUMN_COUNT = 15
 
 
 # This sets the WIDTH and HEIGHT of each grid location
-WIDTH = 30
-HEIGHT = 30
+TILE_WIDTH = 30
+TILE_HEIGHT = 30
 
 
 # This sets the margin between each cell
 # and on the edges of the screen.
 MARGIN = 5
 
-WINDOW_WIDTH = (WIDTH + MARGIN) * COLUMN_COUNT + MARGIN
-WINDOW_HEIGHT = (HEIGHT + MARGIN) * ROW_COUNT + MARGIN
+WINDOW_WIDTH = (TILE_WIDTH + MARGIN) * COLUMN_COUNT + MARGIN
+WINDOW_HEIGHT = (TILE_HEIGHT + MARGIN) * ROW_COUNT + MARGIN
 TITLE = "Highway to Hibernation"
 
 # Colors

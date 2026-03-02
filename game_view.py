@@ -2,6 +2,7 @@ import arcade
 import constants as c
 import game_over_screen as GameOver
 from object import Object
+from player import Player
 
 '''
 GameView represents a window object
@@ -17,59 +18,67 @@ class GameView(arcade.View):
         super().__init__()
 
         self.background_color = c.background
-        self.shape_list = None
-        self.object_list = None
+        # self.shape_list = None
+        # self.object_list = None
+        self.grid_sprite_list = arcade.SpriteList()
+        self.grid_sprites = []
 
-        rock = Object(30 , 4, 4, arcade.color.BATTLESHIP_GREY)
+        # rock = Object(30 , 4, 4, arcade.color.BATTLESHIP_GREY)
 
         self.curr_player_pos = [0, 7]
-        self.grid = []
+        # self.grid = []
         for row in range(c.ROW_COUNT):
             # Add an empty array that will hold each cell
             # in this row
-            self.grid.append([])
+            self.grid_sprites.append([])
             for column in range(c.COLUMN_COUNT):
+                x = (c.MARGIN + c.TILE_WIDTH) * column + c.MARGIN + c.TILE_WIDTH // 2
+                y = (c.MARGIN + c.TILE_HEIGHT) * row + c.MARGIN + c.TILE_HEIGHT // 2
                 if(row == 0 and column == 7):
-                    self.grid[row].append(1)
+                    sprite = arcade.SpriteSolidColor(c.TILE_WIDTH, c.TILE_HEIGHT, color=arcade.color.GREEN)
                 elif(row == 4 and column == 4):
-                    self.grid[row].append(rock)
+                    sprite = arcade.SpriteSolidColor(c.TILE_WIDTH, c.TILE_HEIGHT, color=arcade.color.BATTLESHIP_GREY)
                 else:
-                    self.grid[row].append(0)  # Append a cell
+                    sprite = arcade.SpriteSolidColor(c.TILE_WIDTH, c.TILE_HEIGHT, color=arcade.color.WHITE)  # Append a cell
+                sprite.center_x = x
+                sprite.center_y = y
+                self.grid_sprite_list.append(sprite)
+                self.grid_sprites[row].append(sprite)
 
 
         # Set the window's background color
         self.background_color = arcade.color.BLACK
         # Create shapes from the grid
-        self.recreate_grid()
+        # self.recreate_grid()
 
-    def recreate_grid(self):
-        """
-        Create the shapes for our current grid.
-
-
-        We look at the values in each cell.
-        If the cell contains 0 we create a white shape.
-        If the cell contains 1 we create a green shape.
-        """
-        self.shape_list = arcade.shape_list.ShapeElementList()
-        for row in range(c.ROW_COUNT):
-            for column in range(c.COLUMN_COUNT):
-                if self.grid[row][column] == 0:
-                    color = arcade.color.WHITE
-                # elif self.grid[row][column] == rock:
-                #     color = arcade.color.BATTLESHIP_GREY
-                else:
-                    color = arcade.color.GREEN
+    # def recreate_grid(self):
+    #     """
+    #     Create the shapes for our current grid.
 
 
-                x = (c.MARGIN + c.WIDTH) * column + c.MARGIN + c.WIDTH // 2
-                y = (c.MARGIN + c.HEIGHT) * row + c.MARGIN + c.HEIGHT // 2
+    #     We look at the values in each cell.
+    #     If the cell contains 0 we create a white shape.
+    #     If the cell contains 1 we create a green shape.
+    #     """
+    #     self.shape_list = arcade.shape_list.ShapeElementList()
+    #     for row in range(c.ROW_COUNT):
+    #         for column in range(c.COLUMN_COUNT):
+    #             if self.grid[row][column] == 0:
+    #                 color = arcade.color.WHITE
+    #             # elif self.grid[row][column] == rock:
+    #             #     color = arcade.color.BATTLESHIP_GREY
+    #             else:
+    #                 color = arcade.color.GREEN
 
 
-                current_rect = arcade.shape_list.create_rectangle_filled(
-                    x, y, c.WIDTH, c.HEIGHT, color,
-                )
-                self.shape_list.append(current_rect)
+    #             x = (c.MARGIN + c.TILE_WIDTH) * column + c.MARGIN + c.TILE_WIDTH // 2
+    #             y = (c.MARGIN + c.TILE_HEIGHT) * row + c.MARGIN + c.TILE_HEIGHT // 2
+
+
+    #             current_rect = arcade.shape_list.create_rectangle_filled(
+    #                 x, y, c.TILE_WIDTH, c.TILE_HEIGHT, color,
+    #             )
+    #             self.shape_list.append(current_rect)
 
 
     def on_draw(self):
@@ -81,7 +90,7 @@ class GameView(arcade.View):
 
 
         # Draw the shapes representing our current grid
-        self.shape_list.draw()
+        self.grid_sprite_list.draw()
 
     '''
     on_key_press detects when a key is pressed
@@ -96,33 +105,33 @@ class GameView(arcade.View):
         # If the player presses a key, update the speed
         if key == arcade.key.UP:
             #print("Up!")
-            if(self.curr_player_pos[0] < len(self.grid) - 1):
-                self.grid[self.curr_player_pos[0]][self.curr_player_pos[1]] = 0
-                self.curr_player_pos[0] = self.curr_player_pos[0] + 1
+            if(self.curr_player_pos[0] < len(self.grid_sprites) - 1):
+                # sets position of player sprite to sprite above and the position of 
+                # the sprite above to the players og position
                 print(self.curr_player_pos)
         elif key == arcade.key.DOWN:
             #print("Down!")
             if(self.curr_player_pos[0] > 0):
-                self.grid[self.curr_player_pos[0]][self.curr_player_pos[1]] = 0
+                self.grid_sprites[self.curr_player_pos[0]][self.curr_player_pos[1]] = 0
                 self.curr_player_pos[0] = self.curr_player_pos[0] - 1
                 print(self.curr_player_pos)
         elif key == arcade.key.LEFT:
             #print("Left!")
             if(self.curr_player_pos[1] > 0):
-                self.grid[self.curr_player_pos[0]][self.curr_player_pos[1]] = 0
+                self.grid_sprites[self.curr_player_pos[0]][self.curr_player_pos[1]] = 0
                 self.curr_player_pos[1] = self.curr_player_pos[1] - 1
                 print(self.curr_player_pos)
         elif key == arcade.key.RIGHT:
             #print("Right!")
-            if(self.curr_player_pos[1] < len(self.grid[0]) - 1):
-                self.grid[self.curr_player_pos[0]][self.curr_player_pos[1]] = 0
+            if(self.curr_player_pos[1] < len(self.grid_sprites[0]) - 1):
+                self.grid_sprites[self.curr_player_pos[0]][self.curr_player_pos[1]] = 0
                 self.curr_player_pos[1] = self.curr_player_pos[1] + 1
                 print(self.curr_player_pos)
         elif key == arcade.key.ESCAPE:
             game_over = GameOver.GameOver()
             self.window.show_view(game_over)
-        self.grid[self.curr_player_pos[0]][self.curr_player_pos[1]] = 1
-        self.recreate_grid()
+        self.grid_sprites[self.curr_player_pos[0]][self.curr_player_pos[1]] = 1
+        # self.recreate_grid()
 
     '''
     run_window sets up the window and runs it
