@@ -1,7 +1,6 @@
 import arcade
 import constants as c
 import game_view as GameView
-import sys
 
 '''
 GameOver represents the game over view
@@ -43,8 +42,8 @@ class GameOver(arcade.View):
         #TODO: Change to text objects, same in start_screen
         arcade.draw_text(
             "GAME OVER",
-            x = c.WIDTH / 2,
-            y = c.HEIGHT * 3 / 4,
+            x = c.WINDOW_WIDTH / 2,
+            y = c.WINDOW_HEIGHT * 3 / 4,
             font_size = 50,
             anchor_x = 'center',
             anchor_y = 'center'
@@ -53,8 +52,8 @@ class GameOver(arcade.View):
         #TODO: Change to text objects, same in start_screen
         arcade.draw_text(
             "Click to play again",
-            x = c.WIDTH / 2,
-            y = c.HEIGHT / 2,
+            x = c.WINDOW_WIDTH / 2,
+            y = c.WINDOW_HEIGHT / 2,
             font_size = 20,
             anchor_x = 'center',
             anchor_y = 'center'

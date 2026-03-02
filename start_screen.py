@@ -41,16 +41,16 @@ class StartScreen(arcade.View):
 
         #TODO: Change to text objects, apparently draw is very inefficient
         arcade.draw_text("Highway to Hibernation", 
-                         x = c.WIDTH / 2, 
-                         y = c.HEIGHT * 3 / 4,
-                         font_size = 50,
+                         x = c.WINDOW_WIDTH / 2, 
+                         y = c.WINDOW_HEIGHT * 3 / 4,
+                         font_size = 30,
                          anchor_x = "center",
                          anchor_y = "center")
         
         arcade.draw_text("Click to begin",
-                         x = c.WIDTH / 2,
-                         y = c.HEIGHT / 2,
-                         font_size = 20,
+                         x = c.WINDOW_WIDTH / 2,
+                         y = c.WINDOW_HEIGHT / 2,
+                         font_size = 15,
                          anchor_x = "center",
                          anchor_y = "center")
         
