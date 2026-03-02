@@ -1,4 +1,5 @@
 import arcade
+import constants as c
 
 class Object():
     '''
@@ -13,14 +14,14 @@ class Object():
     returns:
         nothing
     '''
-    def __init__(self, size, x, y, color):
+    def __init__(self, size, row, column, color):
         # For now just makes cubes
         # Right now this also ignores the angle parameter
         self.obj = arcade.SpriteSolidColor(
             width = size,
             height = size,
-            center_x = x,
-            center_y = y,
+            center_x = (c.MARGIN + c.WIDTH) * column + c.MARGIN + c.WIDTH // 2,
+            center_y = (c.MARGIN + c.WIDTH) * row + c.MARGIN + c.WIDTH // 2,
             color = color,
             angle = 0
         )
