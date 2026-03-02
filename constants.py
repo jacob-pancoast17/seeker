@@ -22,3 +22,4 @@ TITLE = "Highway to Hibernation"
 background = arcade.csscolor.SEA_GREEN
 start_screen_background = arcade.csscolor.BLACK
 game_over_background = arcade.csscolor.BLACK
+brennas_favorite_color = arcade.csscolor.DARK_GREEN
