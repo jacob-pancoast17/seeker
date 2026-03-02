@@ -20,6 +20,8 @@ class GameView(arcade.View):
         self.shape_list = None
         self.object_list = None
 
+        rock = Object(30 , 4, 4, arcade.color.BATTLESHIP_GREY)
+
         self.curr_player_pos = [0, 7]
         self.grid = []
         for row in range(c.ROW_COUNT):
@@ -30,7 +32,7 @@ class GameView(arcade.View):
                 if(row == 0 and column == 7):
                     self.grid[row].append(1)
                 elif(row == 4 and column == 4):
-                    self.grid[row].append(2)
+                    self.grid[row].append(rock)
                 else:
                     self.grid[row].append(0)  # Append a cell
 
@@ -54,8 +56,8 @@ class GameView(arcade.View):
             for column in range(c.COLUMN_COUNT):
                 if self.grid[row][column] == 0:
                     color = arcade.color.WHITE
-                elif self.grid[row][column] == 2:
-                    color = arcade.color.BATTLESHIP_GREY
+                # elif self.grid[row][column] == rock:
+                #     color = arcade.color.BATTLESHIP_GREY
                 else:
                     color = arcade.color.GREEN
 
