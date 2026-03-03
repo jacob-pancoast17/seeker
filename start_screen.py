@@ -1,4 +1,5 @@
 import arcade
+import arcade.gui
 import constants as c
 import game_view as GameView
 
@@ -15,6 +16,30 @@ class StartScreen(arcade.View):
     def __init__(self):
         super().__init__()
 
+        self.uimanager = arcade.gui.UIManager()
+        self.uimanager.enable()
+
+        play_texture = arcade.load_texture("sprites/play.png")
+        play_button = arcade.gui.UITextureButton(
+            width = 100,
+            texture = play_texture
+        )
+
+        # Initialize button with on-click event
+        @play_button.event("on_click")
+        def on_click_play(event):
+            print("Awesome!")
+            game_view = GameView.GameView()
+            self.window.show_view(game_view)
+
+        self.anchor = self.uimanager.add(arcade.gui.UIAnchorLayout())
+
+        self.anchor.add(
+            anchor_x = "center_x",
+            anchor_y = "center_y",
+            child = play_button
+        )
+
     '''
     on_show_view defines events that happen when switching
     to the start screen view
@@ -28,6 +53,17 @@ class StartScreen(arcade.View):
 
         # Reset view
         self.window.default_camera.use()
+        self.uimanager.enable()
+
+    '''
+    on_hide_view defines events that happen when switching
+    away from the start screen
+
+    param: self
+    return: nothing
+    '''
+    def on_hide_view(self):
+        self.uimanager.disable()
 
     '''
     on_draw redraws the frame for the start screen
@@ -39,32 +75,7 @@ class StartScreen(arcade.View):
         # Reset window
         self.clear()
 
-        #TODO: Change to text objects, apparently draw is very inefficient
-        arcade.draw_text("Highway to Hibernation", 
-                         x = c.WINDOW_WIDTH / 2, 
-                         y = c.WINDOW_HEIGHT * 3 / 4,
-                         font_size = 30,
-                         anchor_x = "center",
-                         anchor_y = "center")
+        # Draw UI elements
+        self.uimanager.draw()
         
-        arcade.draw_text("Click to begin",
-                         x = c.WINDOW_WIDTH / 2,
-                         y = c.WINDOW_HEIGHT / 2,
-                         font_size = 15,
-                         anchor_x = "center",
-                         anchor_y = "center")
-        
-    '''
-    on_mouse_press detects when the mouse is pressed and
-    changes the view to the game view
-
-    param: self
-           _x - cursor x pos
-           _y - cursor y pos
-           _button - button on mouse pressed
-           _modifiers - shift, ctrl, numlock, etc.
-    '''
-    def on_mouse_press(self, _x, _y, _button, _modifiers):
-        game_view = GameView.GameView()
-        self.window.show_view(game_view)
-        game_view.run_window()
+    
