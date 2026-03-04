@@ -40,7 +40,7 @@ class GameView(arcade.View):
 
     def recreate_grid(self):
         """
-        Create the shapes for our current grid.
+        Create the shapes for current grid.
 
 
         We look at the values in each cell.
