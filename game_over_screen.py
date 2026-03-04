@@ -1,6 +1,5 @@
 import arcade
 import constants as c
-import game_view as GameView
 
 '''
 GameOver represents the game over view
@@ -62,8 +61,8 @@ class GameOver(arcade.View):
         #TODO: Change to text objects, same in start_screen
         arcade.draw_text(
             "or press 'E' to exit the program.",
-            x = c.WIDTH / 2,
-            y = (c.HEIGHT / 2)-30,
+            x = c.WINDOW_WIDTH / 2,
+            y = (c.WINDOW_HEIGHT / 2)-30,
             font_size = 20,
             anchor_x = 'center',
             anchor_y = 'center'
@@ -80,9 +79,8 @@ class GameOver(arcade.View):
            _modifiers - shift, ctrl, numlock, etc.
     '''
     def on_mouse_press(self, _x, _y, _button, _modifiers):
-        game_view = GameView.GameView()
-        self.window.show_view(game_view)
-        game_view.run_window()
+        from game_view import GameView
+        self.window.show_view(GameView())
 
     '''
     on_key_press detects when the E key is pressed

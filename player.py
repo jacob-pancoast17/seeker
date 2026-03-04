@@ -8,14 +8,14 @@ class Player():
         self.obj = arcade.SpriteSolidColor(
             width = size,
             height = size,
-            center_x = (c.MARGIN + c.TILE_WIDTH) * column + c.MARGIN + c.TILE_WIDTH // 2,
-            center_y = (c.MARGIN + c.TILE_HEIGHT) * row + c.MARGIN + c.TILE_HEIGHT // 2,
+            center_x = (c.MARGIN + c.TILE_WIDTH) * row + c.MARGIN + c.TILE_WIDTH // 2,
+            center_y = (c.MARGIN + c.TILE_HEIGHT) * column + c.MARGIN + c.TILE_HEIGHT // 2,
             color = color,
             angle = 0
         )
 
-        self.curr_x = column
-        self.curr_y = row
+        self.curr_x = row
+        self.curr_y = column
 
     def get_curr_x(self):
         return self.curr_x

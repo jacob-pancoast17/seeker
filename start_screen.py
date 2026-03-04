@@ -1,6 +1,6 @@
 import arcade
 import constants as c
-import game_view as GameView
+from game_view import GameView
 
 '''
 StartScreen represents the start screen view
@@ -65,6 +65,5 @@ class StartScreen(arcade.View):
            _modifiers - shift, ctrl, numlock, etc.
     '''
     def on_mouse_press(self, _x, _y, _button, _modifiers):
-        game_view = GameView.GameView()
+        game_view = GameView()
         self.window.show_view(game_view)
-        game_view.run_window()
