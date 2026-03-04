@@ -1,6 +1,6 @@
 from object import Object
 
-class ObstacleObject(Object):
+class Obstacle(Object):
     '''
     Constructor creates a obstacle object which "is-an" object
 

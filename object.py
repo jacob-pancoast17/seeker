@@ -20,11 +20,14 @@ class Object():
         self.obj = arcade.SpriteSolidColor(
             width = size,
             height = size,
-            center_x = (c.MARGIN + c.WIDTH) * column + c.MARGIN + c.WIDTH // 2,
-            center_y = (c.MARGIN + c.WIDTH) * row + c.MARGIN + c.WIDTH // 2,
+            center_x = (c.MARGIN + c.TILE_WIDTH) * row + c.MARGIN + c.TILE_WIDTH // 2,
+            center_y = (c.MARGIN + c.TILE_HEIGHT) * column + c.MARGIN + c.TILE_HEIGHT // 2,
             color = color,
             angle = 0
         )
+
+        self.curr_x = row
+        self.curr_y = column
     
     '''
     to_sprite returns the object as a sprite to be drawn

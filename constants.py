@@ -8,6 +8,7 @@ COLUMN_COUNT = 15
 # This sets the WIDTH and HEIGHT of each grid location
 TILE_WIDTH = 30
 TILE_HEIGHT = 30
+TILE_SIZE = 30
 
 
 # This sets the margin between each cell

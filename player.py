@@ -23,6 +23,79 @@ class Player():
     def get_curr_y(self):
         return self.curr_y
     
+    def try_move(self, key, object_type, objects_list):
+        
+        if key == arcade.key.UP:
+            if self.curr_y >= c.ROW_COUNT - 1:
+                return False
+            
+            elif object_type == 'Obstacle':
+                self.obj.center_y += c.VELOCITY_MULTIPLIER
+                hit_list = arcade.check_for_collision_with_list(
+                    self.obj,
+                    objects_list
+                )
+                self.obj.center_y -= c.VELOCITY_MULTIPLIER
+                if hit_list:
+                    return False
+            print("Good to go!")
+                
+            return True
+        
+        elif key == arcade.key.DOWN:
+            if self.curr_y <= 0:
+                return False
+            
+            elif object_type == 'Obstacle':
+                self.obj.center_y -= c.VELOCITY_MULTIPLIER
+                hit_list = arcade.check_for_collision_with_list(
+                    self.obj,
+                    objects_list
+                )
+                self.obj.center_y += c.VELOCITY_MULTIPLIER
+                if hit_list:
+                    return False
+            print("Good to go!")
+                
+            return True
+        
+        elif key == arcade.key.LEFT:
+            if self.curr_x <= 0:
+                return False
+            
+            elif object_type == 'Obstacle':
+                self.obj.center_x -= c.VELOCITY_MULTIPLIER
+                hit_list = arcade.check_for_collision_with_list(
+                    self.obj,
+                    objects_list
+                )
+                self.obj.center_x += c.VELOCITY_MULTIPLIER
+                if hit_list:
+                    return False
+            print("Good to go!")
+                
+            return True
+        
+        elif key == arcade.key.RIGHT:
+            if self.curr_x >= c.COLUMN_COUNT - 1:
+                return False
+            
+            elif object_type == 'Obstacle':
+                self.obj.center_x += c.VELOCITY_MULTIPLIER
+                hit_list = arcade.check_for_collision_with_list(
+                    self.obj,
+                    objects_list
+                )
+                self.obj.center_x -= c.VELOCITY_MULTIPLIER
+                if hit_list:
+                    return False
+            print("Good to go!")
+                
+            return True
+
+            
+
+    
     def move(self, key):
 
         if (key == arcade.key.UP and

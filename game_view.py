@@ -1,6 +1,6 @@
 import arcade
 import constants as c
-from object import Object
+from obstacle_object import Obstacle
 from player import Player
 
 '''
@@ -20,7 +20,7 @@ class GameView(arcade.View):
         self.background_color = c.background
 
         self.grid = None
-        self.objects = None
+        self.obstacles = None
 
         self.player = None
         self.player_list = None
@@ -39,7 +39,9 @@ class GameView(arcade.View):
         # Create grid
         self.grid = arcade.SpriteList()
         # Create objects
-        self.objects = arcade.SpriteList()
+        self.obstacles = arcade.SpriteList()
+        rock = Obstacle(c.TILE_SIZE, 3, 6, arcade.csscolor.DARK_SLATE_GRAY)
+        self.obstacles.append(rock.to_sprite())
 
         # Create player object and "list" of players--
         # pyarcade can only drawing using a SpriteList, so
@@ -81,6 +83,7 @@ class GameView(arcade.View):
         # Draw the shapes representing our current grid
         self.grid.draw()
         self.player_list.draw() # Draw the player on TOP of the grid
+        self.obstacles.draw()
     
 
     def on_key_press(self, key, modifiers):
@@ -97,7 +100,8 @@ class GameView(arcade.View):
             key == arcade.key.LEFT or
             key == arcade.key.RIGHT):
             # Call Player's move function
-            self.player.move(key)
+            if self.player.try_move(key, 'Obstacle', self.obstacles):
+                self.player.move(key)
         elif key == arcade.key.ESCAPE:
             from game_over_screen import GameOver
             self.window.show_view(GameOver())
