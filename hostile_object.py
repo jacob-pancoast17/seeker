@@ -25,6 +25,7 @@ class Hostile(Object):
                 player)
             if hit_list:
                 window.show_view(GameOver())
+                return False
             self.obj.center_y = temp
         else:
             self.obj.center_y -= c.VELOCITY_MULTIPLIER
@@ -33,7 +34,10 @@ class Hostile(Object):
                 player)
             if hit_list:
                 window.show_view(GameOver())
+                return False
             self.obj.center_y += c.VELOCITY_MULTIPLIER
+        return True
+
 
     def move(self):
         if self.obj.center_y < 0:
