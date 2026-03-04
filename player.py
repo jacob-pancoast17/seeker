@@ -23,7 +23,7 @@ class Player():
     def get_curr_y(self):
         return self.curr_y
     
-    def try_move(self, key, object_type, objects_list):
+    def try_move(self, key, object_type, objects_sprite_list):
         
         if key == arcade.key.UP:
             if self.curr_y >= c.ROW_COUNT - 1:
@@ -34,7 +34,7 @@ class Player():
                 self.obj.center_y += c.VELOCITY_MULTIPLIER
                 hit_list = arcade.check_for_collision_with_list(
                     self.obj,
-                    objects_list
+                    objects_sprite_list
                 )
                 self.obj.center_y -= c.VELOCITY_MULTIPLIER
                 if hit_list:
@@ -53,7 +53,7 @@ class Player():
                 self.obj.center_y -= c.VELOCITY_MULTIPLIER
                 hit_list = arcade.check_for_collision_with_list(
                     self.obj,
-                    objects_list
+                    objects_sprite_list
                 )
                 self.obj.center_y += c.VELOCITY_MULTIPLIER
                 if hit_list:
@@ -71,7 +71,7 @@ class Player():
                 self.obj.center_x -= c.VELOCITY_MULTIPLIER
                 hit_list = arcade.check_for_collision_with_list(
                     self.obj,
-                    objects_list
+                    objects_sprite_list
                 )
                 self.obj.center_x += c.VELOCITY_MULTIPLIER
                 if hit_list:
@@ -89,7 +89,7 @@ class Player():
                 self.obj.center_x += c.VELOCITY_MULTIPLIER
                 hit_list = arcade.check_for_collision_with_list(
                     self.obj,
-                    objects_list
+                    objects_sprite_list
                 )
                 self.obj.center_x -= c.VELOCITY_MULTIPLIER
                 if hit_list:

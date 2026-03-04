@@ -26,8 +26,8 @@ class GameView(arcade.View):
 
         self.grid = None
         self.obstacles_sprites = None
-        self.hostiles_sprites = None
-        self.hostiles_objs = None
+        self.aggressive_hostiles_sprites = None
+        self.aggressive_hostiles_objs = None
 
         self.player_sprite = None
         self.player = None
@@ -52,9 +52,9 @@ class GameView(arcade.View):
         self.obstacles_sprites.append(rock.to_sprite())
 
         # Create hostiles
-        self.hostiles_sprites = arcade.SpriteList()
+        self.aggressive_hostiles_sprites = arcade.SpriteList()
         car = Hostile(c.TILE_SIZE, 11, 6, arcade.csscolor.RED)
-        self.hostiles_sprites.append(car.to_sprite())
+        self.aggressive_hostiles_sprites.append(car.to_sprite())
 
         self.hostile_objs = []
         self.hostile_objs.append(car)
@@ -100,7 +100,7 @@ class GameView(arcade.View):
         self.grid.draw()
         self.player_sprite.draw() # Draw the player on TOP of the grid
         self.obstacles_sprites.draw()
-        self.hostiles_sprites.draw()
+        self.aggressive_hostiles_sprites.draw()
         
     def on_update(self, delta_time):
         '''
@@ -112,7 +112,8 @@ class GameView(arcade.View):
         if self.world_time >= self.next_move:
             self.next_move += speed
             for hostile in self.hostile_objs:
-                hostile.move()
+                if hostile.try_move(self.window, self.player.to_sprite()):
+                    hostile.move()
     
 
     def on_key_press(self, key, modifiers):
@@ -134,7 +135,7 @@ class GameView(arcade.View):
             # Test if player is going to collide with something
             if not self.player.try_move(key, 'Obstacle', self.obstacles_sprites):
                 move = False
-            elif not self.player.try_move(key, 'Hostile', self.hostiles_sprites):
+            elif not self.player.try_move(key, 'Hostile', self.aggressive_hostiles_sprites):
                 from game_over_screen import GameOver
                 self.window.show_view(GameOver())
 
