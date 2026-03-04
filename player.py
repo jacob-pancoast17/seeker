@@ -2,16 +2,15 @@ import arcade
 import constants as c
 
 class Player():
-    def __init__(self, size, row, column, color):
+    def __init__(self, row, column):
         # For now just makes cubes
         # Right now this also ignores the angle parameter
-        self.obj = arcade.SpriteSolidColor(
-            width = size,
-            height = size,
+        self.obj = arcade.Sprite(
+            path_or_texture= "sprites/bear.png",
+            scale = 1.0,
             center_x = (c.MARGIN + c.TILE_WIDTH) * row + c.MARGIN + c.TILE_WIDTH // 2,
             center_y = (c.MARGIN + c.TILE_HEIGHT) * column + c.MARGIN + c.TILE_HEIGHT // 2,
-            color = color,
-            angle = 0
+            angle = 180.0
         )
 
         self.curr_x = row
@@ -97,9 +96,6 @@ class Player():
             print("Good to go!")
                 
             return True
-
-            
-
     
     def move(self, key):
 
@@ -108,24 +104,32 @@ class Player():
             #print("UP")
             self.obj.center_y += c.VELOCITY_MULTIPLIER
             self.curr_y += 1
+            self.obj.change_angle = 180
+            self.obj.angle = self.obj.change_angle
 
         elif (key == arcade.key.DOWN and
               self.curr_y > 0):
             #print("DOWN")
             self.obj.center_y -= c.VELOCITY_MULTIPLIER
             self.curr_y -= 1
+            self.obj.change_angle = 0
+            self.obj.angle = self.obj.change_angle
 
         elif (key == arcade.key.LEFT and
               self.curr_x > 0):
             #print("LEFT")
             self.obj.center_x -= c.VELOCITY_MULTIPLIER
             self.curr_x -= 1
+            self.obj.change_angle = 90
+            self.obj.angle = self.obj.change_angle
 
         elif (key == arcade.key.RIGHT and
               self.curr_x < c.COLUMN_COUNT - 1):
             #print("RIGHT")
             self.obj.center_x += c.VELOCITY_MULTIPLIER
             self.curr_x += 1
+            self.obj.change_angle = 270
+            self.obj.angle = self.obj.change_angle
 
         print(f"[{self.curr_x}, {self.curr_y}]")
 
