@@ -29,7 +29,8 @@ class Player():
             if self.curr_y >= c.ROW_COUNT - 1:
                 return False
             
-            elif object_type == 'Obstacle':
+            elif (object_type == 'Obstacle' or
+                  object_type == 'Hostile'):
                 self.obj.center_y += c.VELOCITY_MULTIPLIER
                 hit_list = arcade.check_for_collision_with_list(
                     self.obj,
@@ -38,6 +39,7 @@ class Player():
                 self.obj.center_y -= c.VELOCITY_MULTIPLIER
                 if hit_list:
                     return False
+
             print("Good to go!")
                 
             return True
@@ -46,7 +48,8 @@ class Player():
             if self.curr_y <= 0:
                 return False
             
-            elif object_type == 'Obstacle':
+            elif (object_type == 'Obstacle' or
+                  object_type == 'Hostile'):
                 self.obj.center_y -= c.VELOCITY_MULTIPLIER
                 hit_list = arcade.check_for_collision_with_list(
                     self.obj,
@@ -63,7 +66,8 @@ class Player():
             if self.curr_x <= 0:
                 return False
             
-            elif object_type == 'Obstacle':
+            elif (object_type == 'Obstacle' or
+                  object_type == 'Hostile'):
                 self.obj.center_x -= c.VELOCITY_MULTIPLIER
                 hit_list = arcade.check_for_collision_with_list(
                     self.obj,
@@ -80,7 +84,8 @@ class Player():
             if self.curr_x >= c.COLUMN_COUNT - 1:
                 return False
             
-            elif object_type == 'Obstacle':
+            elif (object_type == 'Obstacle' or
+                  object_type == 'Hostile'):
                 self.obj.center_x += c.VELOCITY_MULTIPLIER
                 hit_list = arcade.check_for_collision_with_list(
                     self.obj,

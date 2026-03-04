@@ -1,5 +1,6 @@
 import arcade
 import constants as c
+from hostile_object import Hostile
 from obstacle_object import Obstacle
 from player import Player
 
@@ -19,11 +20,17 @@ class GameView(arcade.View):
 
         self.background_color = c.background
 
-        self.grid = None
-        self.obstacles = None
+        # Timing
+        self.world_time = 0
+        self.next_move = 0
 
+        self.grid = None
+        self.obstacles_sprites = None
+        self.hostiles_sprites = None
+        self.hostiles_objs = None
+
+        self.player_sprite = None
         self.player = None
-        self.player_list = None
 
         self.setup()
 
@@ -38,10 +45,19 @@ class GameView(arcade.View):
 
         # Create grid
         self.grid = arcade.SpriteList()
-        # Create objects
-        self.obstacles = arcade.SpriteList()
+
+        # Create obstacles
+        self.obstacles_sprites = arcade.SpriteList()
         rock = Obstacle(c.TILE_SIZE, 3, 6, arcade.csscolor.DARK_SLATE_GRAY)
-        self.obstacles.append(rock.to_sprite())
+        self.obstacles_sprites.append(rock.to_sprite())
+
+        # Create hostiles
+        self.hostiles_sprites = arcade.SpriteList()
+        car = Hostile(c.TILE_SIZE, 12, 6, arcade.csscolor.RED)
+        self.hostiles_sprites.append(car.to_sprite())
+
+        self.hostile_objs = []
+        self.hostile_objs.append(car)
 
         # Create player object and "list" of players--
         # pyarcade can only drawing using a SpriteList, so
@@ -50,11 +66,11 @@ class GameView(arcade.View):
                               c.STARTING_X,
                                 c.STARTING_Y, 
                                 color = arcade.color.GREEN)
-        self.player_list = arcade.SpriteList()
+        self.player_sprite = arcade.SpriteList()
 
         # Use the player class's to_sprite() to add the
         # SPRITE version to the SpriteList (to match types)
-        self.player_list.append(self.player.to_sprite())
+        self.player_sprite.append(self.player.to_sprite())
 
         # Create the grid
         for row in range(c.ROW_COUNT):
@@ -82,8 +98,21 @@ class GameView(arcade.View):
 
         # Draw the shapes representing our current grid
         self.grid.draw()
-        self.player_list.draw() # Draw the player on TOP of the grid
-        self.obstacles.draw()
+        self.player_sprite.draw() # Draw the player on TOP of the grid
+        self.obstacles_sprites.draw()
+        self.hostiles_sprites.draw()
+        
+    def on_update(self, delta_time):
+        '''
+        Happens every frame
+        '''
+        self.world_time += delta_time
+        speed = 1
+
+        if self.world_time >= self.next_move:
+            self.next_move += speed
+            for hostile in self.hostile_objs:
+                hostile.move()
     
 
     def on_key_press(self, key, modifiers):
@@ -94,14 +123,21 @@ class GameView(arcade.View):
            symbol - key pressed
            modifiers - e.g. capslock or numlock
         '''
-        # If the player presses a key, update the speed
+
+        # If the player presses a key, update the speed if able to move
+        move = True
         if (key == arcade.key.UP or
             key == arcade.key.DOWN or
             key == arcade.key.LEFT or
             key == arcade.key.RIGHT):
-            # Call Player's move function
-            if self.player.try_move(key, 'Obstacle', self.obstacles):
+
+            # Test if player is going to collide with something
+            if not self.player.try_move(key, 'Obstacle', self.obstacles_sprites):
+                move = False
+            elif not self.player.try_move(key, 'Hostile', self.hostiles_sprites):
+                from game_over_screen import GameOver
+                self.window.show_view(GameOver())
+
+            # If not, we are good to move!
+            if move == True:
                 self.player.move(key)
-        elif key == arcade.key.ESCAPE:
-            from game_over_screen import GameOver
-            self.window.show_view(GameOver())
