@@ -53,7 +53,7 @@ class GameView(arcade.View):
 
         # Create hostiles
         self.hostiles_sprites = arcade.SpriteList()
-        car = Hostile(c.TILE_SIZE, 12, 6, arcade.csscolor.RED)
+        car = Hostile(c.TILE_SIZE, 11, 6, arcade.csscolor.RED)
         self.hostiles_sprites.append(car.to_sprite())
 
         self.hostile_objs = []
@@ -107,7 +107,7 @@ class GameView(arcade.View):
         Happens every frame
         '''
         self.world_time += delta_time
-        speed = 1
+        speed = 0.5
 
         if self.world_time >= self.next_move:
             self.next_move += speed
