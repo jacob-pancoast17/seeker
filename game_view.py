@@ -73,10 +73,8 @@ class GameView(arcade.View):
         # Create player object and "list" of players--
         # pyarcade can only drawing using a SpriteList, so
         # player has to be in a SpriteList
-        self.player = Player(c.TILE_WIDTH,
-                              c.STARTING_X,
-                                c.STARTING_Y, 
-                                color = arcade.color.GREEN)
+        self.player = Player(c.STARTING_X,
+                                c.STARTING_Y)
         self.player_sprite = arcade.SpriteList()
 
         # Use the player class's to_sprite() to add the
