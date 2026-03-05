@@ -26,6 +26,9 @@ class GameView(arcade.View):
 
         self.grid = None
         self.obstacles_sprites = None
+        # Hostiles are split into two categories: passive (non moving) and aggressive (moving)
+        self.passive_hostiles_sprites = None
+        self.passive_hostiles_objs = None
         self.aggressive_hostiles_sprites = None
         self.aggressive_hostiles_objs = None
 
@@ -56,8 +59,16 @@ class GameView(arcade.View):
         car = Hostile(c.TILE_SIZE, 11, 6, arcade.csscolor.RED)
         self.aggressive_hostiles_sprites.append(car.to_sprite())
 
-        self.hostile_objs = []
-        self.hostile_objs.append(car)
+        self.aggressive_hostile_objs = []
+        self.aggressive_hostile_objs.append(car)
+
+        # Create passive hostiles (don't move, but still kill player if they touch)
+        self.passive_hostiles_sprites = arcade.SpriteList()
+        water = Hostile(c.TILE_SIZE, 5, 8, arcade.csscolor.BLUE)
+        self.passive_hostiles_sprites.append(water.to_sprite())
+
+        self.passive_hostiles_objs = []
+        self.passive_hostiles_objs.append(water)
 
         # Create player object and "list" of players--
         # pyarcade can only drawing using a SpriteList, so
@@ -100,6 +111,8 @@ class GameView(arcade.View):
         self.grid.draw()
         self.player_sprite.draw() # Draw the player on TOP of the grid
         self.obstacles_sprites.draw()
+        # Draw passive and aggressive hostiles
+        self.passive_hostiles_sprites.draw()
         self.aggressive_hostiles_sprites.draw()
         
     def on_update(self, delta_time):
@@ -109,11 +122,12 @@ class GameView(arcade.View):
         self.world_time += delta_time
         speed = 0.5
 
+        # Move aggressive hostile every 0.5 seconds
         if self.world_time >= self.next_move:
             self.next_move += speed
-            for hostile in self.hostile_objs:
-                if hostile.try_move(self.window, self.player.to_sprite()):
-                    hostile.move()
+            for hostile in self.aggressive_hostile_objs:
+                hostile.try_move(self.window, self.player.to_sprite())
+                hostile.move()
     
 
     def on_key_press(self, key, modifiers):
@@ -135,10 +149,19 @@ class GameView(arcade.View):
             # Test if player is going to collide with something
             if not self.player.try_move(key, 'Obstacle', self.obstacles_sprites):
                 move = False
-            elif not self.player.try_move(key, 'Hostile', self.aggressive_hostiles_sprites):
-                from game_over_screen import GameOver
-                self.window.show_view(GameOver())
+
+            if move:
+                # Test if player is going to collide with agressive hostile 
+                if not self.player.try_move(key, 'Hostile', self.aggressive_hostiles_sprites):
+                    # If so, game over
+                    from game_over_screen import GameOver
+                    self.window.show_view(GameOver())
+                # Test if player is going to collide with passive hostile
+                if not self.player.try_move(key, 'Hostile', self.passive_hostiles_sprites):
+                    # If so, game over
+                    from game_over_screen import GameOver
+                    self.window.show_view(GameOver())
 
             # If not, we are good to move!
-            if move == True:
+            if move:
                 self.player.move(key)
