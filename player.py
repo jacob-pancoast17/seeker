@@ -9,7 +9,7 @@ class Player():
         
         self.obj = arcade.Sprite(
             path_or_texture= "sprites/bear.png",
-            scale = 1.0,
+            scale = 1.25,
             center_x = (c.MARGIN + c.TILE_WIDTH) * row + c.MARGIN + c.TILE_WIDTH // 2,
             center_y = (c.MARGIN + c.TILE_HEIGHT) * column + c.MARGIN + c.TILE_HEIGHT // 2,
             angle = 180.0
