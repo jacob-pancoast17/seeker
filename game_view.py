@@ -3,6 +3,7 @@ import constants as c
 from hostile_object import Hostile
 from obstacle_object import Obstacle
 from player import Player
+from world_gen import WorldGen
 
 '''
 GameView represents a window object
@@ -31,6 +32,9 @@ class GameView(arcade.View):
 
         self.player_sprite = None
         self.player = None
+
+        self.world = None
+        self.curr_loaded = None
 
         self.setup()
 
@@ -89,6 +93,9 @@ class GameView(arcade.View):
                 # Append to list of all grid sprites to draw
                 self.grid.append(sprite)
 
+        self.world = WorldGen()
+        self.curr_loaded = [self.world.generate_row(0)]
+
     def on_draw(self):
         """
         Render the screen.
@@ -99,8 +106,11 @@ class GameView(arcade.View):
         # Draw the shapes representing our current grid
         self.grid.draw()
         self.player_sprite.draw() # Draw the player on TOP of the grid
-        self.obstacles_sprites.draw()
+        #self.obstacles_sprites.draw()
         self.aggressive_hostiles_sprites.draw()
+
+        # Load 1 row (TEMP)
+        self.curr_loaded[0].draw()
         
     def on_update(self, delta_time):
         '''
@@ -133,11 +143,12 @@ class GameView(arcade.View):
             key == arcade.key.RIGHT):
 
             # Test if player is going to collide with something
-            if not self.player.try_move(key, 'Obstacle', self.obstacles_sprites):
-                move = False
-            elif not self.player.try_move(key, 'Hostile', self.aggressive_hostiles_sprites):
-                from game_over_screen import GameOver
-                self.window.show_view(GameOver())
+            for row in self.curr_loaded:
+                if not self.player.try_move(key, 'Obstacle', row):#'''self.obstacles_sprites'''
+                    move = False
+                elif not self.player.try_move(key, 'Hostile', self.aggressive_hostiles_sprites):
+                    from game_over_screen import GameOver
+                    self.window.show_view(GameOver())
 
             # If not, we are good to move!
             if move == True:
