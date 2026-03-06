@@ -5,12 +5,24 @@ class Player():
     def __init__(self, row, column):
         # For now just makes cubes
         # Right now this also ignores the angle parameter
+
+        '''
         self.obj = arcade.Sprite(
             path_or_texture= "sprites/bear.png",
             scale = 1.0,
             center_x = (c.MARGIN + c.TILE_WIDTH) * row + c.MARGIN + c.TILE_WIDTH // 2,
             center_y = (c.MARGIN + c.TILE_HEIGHT) * column + c.MARGIN + c.TILE_HEIGHT // 2,
             angle = 180.0
+        )
+        '''
+        # program is broken without this so I just commented out the code 
+        # above to use later when we have the bear.png
+        self.obj = arcade.SpriteSolidColor(
+            width = c.TILE_WIDTH,
+            height = c.TILE_HEIGHT,
+            center_x = (c.MARGIN + c.TILE_WIDTH) * row + c.MARGIN + c.TILE_WIDTH // 2,
+            center_y = (c.MARGIN + c.TILE_HEIGHT) * column + c.MARGIN + c.TILE_HEIGHT // 2,
+            color = arcade.color.GREEN
         )
 
         self.curr_x = row
