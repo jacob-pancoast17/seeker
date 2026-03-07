@@ -94,7 +94,13 @@ class GameView(arcade.View):
                 self.grid.append(sprite)
 
         self.world = WorldGen()
-        self.curr_loaded = [self.world.generate_row(0)]
+        
+        self.curr_loaded = []
+        for i in range(c.ROW_COUNT):
+            self.curr_loaded.append(self.world.generate_row(i))
+        for i in range(len(self.curr_loaded)):
+            print(self.world.rows[i])
+            print(self.curr_loaded[i])
 
     def on_draw(self):
         """
@@ -110,7 +116,8 @@ class GameView(arcade.View):
         self.aggressive_hostiles_sprites.draw()
 
         # Load 1 row (TEMP)
-        self.curr_loaded[0].draw()
+        for i in range(len(self.curr_loaded)):
+            self.curr_loaded[i].draw()
         
     def on_update(self, delta_time):
         '''

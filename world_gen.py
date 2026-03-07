@@ -116,15 +116,23 @@ class WorldGen():
         elif self.rows[row] == 1:
 
             return self.generate_river(row)
-        
+          
         else:
 
             print("PROBLEM IN GENERATION.")
             exit()
     
     def generate_cars(self, row):
-        # TODO: Implement
-        pass
+
+        hostiles = arcade.SpriteList()
+
+        # For each tile, just generate a hostile object that kills you
+        for i in range(c.COLUMN_COUNT):
+
+            hostiles.append(
+                Hostile(c.TILE_SIZE, i, row, arcade.csscolor.RED).to_sprite())
+        
+        return hostiles
 
     def generate_grassy(self, row):
         '''
@@ -157,24 +165,38 @@ class WorldGen():
             if (grass[i] < -1 or
                 grass[i] > 1):
 
-                sprites.append(Obstacle(c.TILE_SIZE, i, row, arcade.csscolor.DARK_GREEN).to_sprite())
+                sprites.append(
+                    Obstacle(c.TILE_SIZE, i, row, arcade.csscolor.DARK_GREEN).to_sprite())
 
             # Otherwise, make it a random chance to be a rock
             else:
 
                 if random.random() < .3:
-                    sprites.append(Obstacle(c.TILE_SIZE, i, row, arcade.csscolor.DARK_GRAY).to_sprite())
+                    sprites.append(
+                        Obstacle(c.TILE_SIZE, i, row, arcade.csscolor.DARK_GRAY).to_sprite())
         
         return sprites
 
     def generate_river(self, row):
+        '''
+        generate_river takes a row and generates it based on
+        the "river" quality -- a line of water that kills you
+
+        param:
+            self
+            row - a row index to be generated
+        return:
+            a SpriteList object containing all of the object sprites for
+                that row
+        '''
 
         hostiles = arcade.SpriteList()
 
+        # For each tile, just generate a hostile object that kills you
         for i in range(c.COLUMN_COUNT):
 
-            hostiles.append(Hostile(c.TILE_SIZE, i, row, arcade.csscolor.BLUE))
+            hostiles.append(
+                Hostile(c.TILE_SIZE, i, row, arcade.csscolor.BLUE).to_sprite())
         
-
-gen = WorldGen()
-gen.generate_row(0)
+        return hostiles
+        
