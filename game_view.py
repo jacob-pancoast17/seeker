@@ -28,10 +28,8 @@ class GameView(arcade.View):
         self.grid = None
         self.obstacles_sprites = None
         self.aggressive_hostiles_sprites = None
-        self.aggressive_hostiles_objs = None
 
         self.player_sprite = None
-        self.player = None
 
         self.world = None
         self.curr_loaded = None
@@ -53,15 +51,12 @@ class GameView(arcade.View):
         # Create obstacles
         self.obstacles_sprites = arcade.SpriteList()
         rock = Obstacle(c.TILE_SIZE, 3, 6, arcade.csscolor.DARK_SLATE_GRAY)
-        self.obstacles_sprites.append(rock.to_sprite())
+        self.obstacles_sprites.append(rock)
 
         # Create hostiles
         self.aggressive_hostiles_sprites = arcade.SpriteList()
         car = Hostile(c.TILE_SIZE, 11, 6, arcade.csscolor.RED)
-        self.aggressive_hostiles_sprites.append(car.to_sprite())
-
-        self.hostile_objs = []
-        self.hostile_objs.append(car)
+        self.aggressive_hostiles_sprites.append(car)
 
         # Create player object and "list" of players--
         # pyarcade can only drawing using a SpriteList, so
@@ -72,9 +67,7 @@ class GameView(arcade.View):
                                 color = arcade.color.GREEN)
         self.player_sprite = arcade.SpriteList()
 
-        # Use the player class's to_sprite() to add the
-        # SPRITE version to the SpriteList (to match types)
-        self.player_sprite.append(self.player.to_sprite())
+        self.player_sprite.append(self.player)
 
         # Create the grid
         for row in range(c.ROW_COUNT):
@@ -93,14 +86,14 @@ class GameView(arcade.View):
                 # Append to list of all grid sprites to draw
                 self.grid.append(sprite)
 
-        self.world = WorldGen()
+        # self.world = WorldGen()
         
-        self.curr_loaded = []
-        for i in range(c.ROW_COUNT):
-            self.curr_loaded.append(self.world.generate_row(i))
-        for i in range(len(self.curr_loaded)):
-            print(self.world.rows[i])
-            print(self.curr_loaded[i])
+        # self.curr_loaded = []
+        # for i in range(c.ROW_COUNT):
+        #     self.curr_loaded.append(self.world.generate_row(i))
+        # for i in range(len(self.curr_loaded)):
+        #     print(self.world.rows[i])
+        #     print(self.curr_loaded[i])
 
     def on_draw(self):
         """
@@ -116,8 +109,8 @@ class GameView(arcade.View):
         self.aggressive_hostiles_sprites.draw()
 
         # Load 1 row (TEMP)
-        for i in range(len(self.curr_loaded)):
-            self.curr_loaded[i].draw()
+        # for i in range(len(self.curr_loaded)):
+        #     self.curr_loaded[i].draw()
         
     def on_update(self, delta_time):
         '''
@@ -128,8 +121,8 @@ class GameView(arcade.View):
 
         if self.world_time >= self.next_move:
             self.next_move += speed
-            for hostile in self.hostile_objs:
-                if hostile.try_move(self.window, self.player.to_sprite()):
+            for hostile in self.aggressive_hostiles_sprites:
+                if hostile.try_move(self.window, self.player):
                     hostile.move()
     
 
@@ -150,12 +143,13 @@ class GameView(arcade.View):
             key == arcade.key.RIGHT):
 
             # Test if player is going to collide with something
-            for row in self.curr_loaded:
-                if not self.player.try_move(key, 'Obstacle', row):#'''self.obstacles_sprites'''
-                    move = False
-                elif not self.player.try_move(key, 'Hostile', self.aggressive_hostiles_sprites):
-                    from game_over_screen import GameOver
-                    self.window.show_view(GameOver())
+            #for row in self.curr_loaded:
+            if not self.player.try_move(key, 'Obstacle', self.obstacles_sprites):#row):#'''self.obstacles_sprites'''
+                move = False
+                print("FALSE")
+            elif not self.player.try_move(key, 'Hostile', self.aggressive_hostiles_sprites):
+                from game_over_screen import GameOver
+                self.window.show_view(GameOver())
 
             # If not, we are good to move!
             if move == True:
